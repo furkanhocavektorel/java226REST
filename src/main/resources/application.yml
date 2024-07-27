@@ -11,3 +11,11 @@ spring:
       ddl-auto: update
     show-sql: true
     format-sql: true
+
+springdoc:
+  swagger-ui:
+    path: /xd
+  api-docs:
+    path: /api
+
+

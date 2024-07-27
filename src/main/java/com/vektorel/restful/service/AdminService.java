@@ -66,5 +66,20 @@ public class AdminService {
         return responseDtos;
     }
 
+    public List<AdminResponseDto> getAdminBySurname(String surname){
+        List<Admin> admins= repository.findBySurname(surname);
+        List<AdminResponseDto> responses=new ArrayList<>();
+
+        for (Admin admin: admins){
+            responses.add(AdminResponseDto.builder()
+                            .id(admin.getId())
+                            .name(admin.getName())
+                            .surname(admin.getSurname())
+                    .build());
+        }
+
+        return responses;
+    }
+
 
 }

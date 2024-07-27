@@ -15,6 +15,10 @@ public class AdminController {
 
     private final AdminService adminService;
 
+    // 3 adet request tipi vardır
+    // 1_ RequestBody
+    // 2_ RequestParam
+    // 3_ Pathvariable
     @PostMapping("save")
     @CrossOrigin("*")
     public void create(@RequestBody AdminSaveRequestDto dto){
@@ -27,9 +31,14 @@ public class AdminController {
     }
 
     @GetMapping("find-name")
-    // localhost:80/admin/find-name?name=furkan
-    public List<AdminResponseDto> getAdminByName(@RequestParam String name){
+    // localhost:80/admin/find-name?qt=furkan
+    public List<AdminResponseDto> getAdminByName(@RequestParam(name = "qt") String name){
         return adminService.getAdminByName(name);
+    }
+
+    @GetMapping("find-surname/{q}")
+    public List<AdminResponseDto> getAdminBySurname (@PathVariable(name = "q") String surname){
+        return adminService.getAdminBySurname(surname);
     }
 
 
