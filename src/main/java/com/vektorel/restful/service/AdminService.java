@@ -3,6 +3,9 @@ package com.vektorel.restful.service;
 import com.vektorel.restful.dto.request.AdminSaveRequestDto;
 import com.vektorel.restful.dto.response.AdminResponseDto;
 import com.vektorel.restful.entity.Admin;
+import com.vektorel.restful.exception.AllException;
+import com.vektorel.restful.exception.custom.AdminBulunamadiException;
+import com.vektorel.restful.exception.custom.MailException;
 import com.vektorel.restful.repository.AdminRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,8 +27,15 @@ public class AdminService {
         if (admin.isPresent()){
             // normalde front-end 'e bu mail zaten kayıtlı diyen bir mesaj
             // ve bir hata kodu dönülmeli
-            return;
+
+            /*RuntimeException r= new RuntimeException();
+            throw r; */
+
+            throw new MailException(AllException.ADMIN_ZATEN_KAYITLI);
         }
+
+        // kontrolsüz unchecked hatalar
+        // kontrollü checked hatalar
 
         repository.save(Admin.builder()
                         .name(dto.getName())
@@ -53,7 +63,13 @@ public class AdminService {
     }
 
     public List<AdminResponseDto> getAdminByName(String name){
+
         List<Admin> admins=repository.findByName(name);
+
+        if (admins.isEmpty()){
+            throw new AdminBulunamadiException("bu isimde admin yok");
+        }
+
 
         List<AdminResponseDto> responseDtos= new ArrayList<>();
 
