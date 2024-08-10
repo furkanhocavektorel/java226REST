@@ -3,19 +3,18 @@ package com.vektorel.restful.entity;
 import com.vektorel.restful.entity.enums.Gender;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @Entity
 @Table(name = "tbl_admin")
-public class Admin {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Admin extends BaseEntity {
+
     private String name;
     private String surname;
     private String email;
@@ -23,5 +22,5 @@ public class Admin {
     private String adress;
     @Enumerated(EnumType.STRING)
     private Gender gender;
-    private byte deleted=0;
+
 }
