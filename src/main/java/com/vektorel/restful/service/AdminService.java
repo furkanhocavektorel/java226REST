@@ -7,9 +7,11 @@ import com.vektorel.restful.entity.Admin;
 import com.vektorel.restful.exception.AllException;
 import com.vektorel.restful.exception.custom.AdminBulunamadiException;
 import com.vektorel.restful.exception.custom.MailException;
+import com.vektorel.restful.exception.custom.TokenException;
 import com.vektorel.restful.mapper.AdminMapper;
 import com.vektorel.restful.mapper.IAdminMapper;
 import com.vektorel.restful.repository.AdminRepository;
+import com.vektorel.restful.util.JWTManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,7 @@ public class AdminService {
     private final AdminRepository repository;
     // bizim olusturduğumuz mapper
     private final AdminMapper adminMapper;
+    private final JWTManager jwtManager;
 
     public AdminResponseDto save(AdminSaveRequestDto dto){
 
@@ -37,6 +40,19 @@ public class AdminService {
             throw r; */
             throw new MailException(AllException.ADMIN_ZATEN_KAYITLI);
         }
+
+        Optional<Long> id= jwtManager.getIdByToken(dto.getToken());
+
+        if (id.isEmpty()){
+            throw new TokenException(AllException.TOKENA_AIT_ADMIN_BULUNAMADI);
+        }
+
+        Optional<Admin> admin2= repository.findById(id.get());
+
+        if (admin2.isEmpty()){
+            throw new TokenException(AllException.TOKENA_AIT_ADMIN_BULUNAMADI);
+        }
+
         // kontrolsüz unchecked hatalar
         // kontrollü checked hatalar
 

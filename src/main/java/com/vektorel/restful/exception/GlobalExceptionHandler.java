@@ -4,6 +4,7 @@ import com.vektorel.restful.entity.Admin;
 import com.vektorel.restful.exception.custom.AdminBulunamadiException;
 import com.vektorel.restful.exception.custom.KullaniciBulunamadiException;
 import com.vektorel.restful.exception.custom.MailException;
+import com.vektorel.restful.exception.custom.TokenException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,16 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(err, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(TokenException.class)
+    @ResponseBody
+    public ResponseEntity<ErrorMessage> TokenExceptionHandler(TokenException tokenException){
+
+        ErrorMessage err= createErrorMessage(tokenException.exc);
+
+        return new ResponseEntity<>(err, HttpStatus.BAD_REQUEST);
+    }
+
 
     @ExceptionHandler(AdminBulunamadiException.class)
     @ResponseBody
@@ -55,6 +66,8 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(errorMessage,HttpStatus.BAD_REQUEST);
     }
+
+
 
     // HTTPCode özelleştirilmeyecek ise
 /*
